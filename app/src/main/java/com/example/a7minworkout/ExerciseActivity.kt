@@ -16,7 +16,7 @@ class ExerciseActivity : AppCompatActivity() {
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-        
+
         binding?.toolbarExercise?.setNavigationOnClickListener {
             onBackPressed()
         }
