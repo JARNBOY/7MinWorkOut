@@ -72,11 +72,15 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                Toast.makeText(
-                    this@ExerciseActivity,
-                    "30 Seconds are over, lets go to the rest view",
-                    Toast.LENGTH_LONG
-                ).show()
+                if (currentExercisePosition < (exerciseList?.size ?: 0) - 1) {
+                    setUpRestView()
+                } else {
+                    Toast.makeText(
+                        this@ExerciseActivity,
+                        "Congratulation! You have completed the 7 minutes workout.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
 
         }.start()
@@ -84,6 +88,12 @@ class ExerciseActivity : AppCompatActivity() {
     }
 
     private fun setUpRestView() {
+        binding?.flRest?.visibility = View.VISIBLE
+        binding?.tvTitle?.visibility = View.VISIBLE
+        binding?.tvExercise?.visibility = View.INVISIBLE
+        binding?.flExercise?.visibility = View.INVISIBLE
+        binding?.ivImage?.visibility = View.INVISIBLE
+
         stopRestTimer()
         setRestProgressbar()
     }
@@ -96,12 +106,23 @@ class ExerciseActivity : AppCompatActivity() {
     }
 
     private fun setUpExerciseView() {
-        binding?.flProgressBar?.visibility = View.INVISIBLE
-        binding?.tvTitle?.text = "Exercise Name"
+        binding?.flRest?.visibility = View.INVISIBLE
+        binding?.tvTitle?.visibility = View.INVISIBLE
+        binding?.tvExercise?.visibility = View.VISIBLE
         binding?.flExercise?.visibility = View.VISIBLE
+        binding?.ivImage?.visibility = View.VISIBLE
+
         stopExerciseTimer()
+        exerciseList?.let {
+            binding?.ivImage?.setImageResource(it[currentExercisePosition].getImage())
+            binding?.tvExercise?.text = it[currentExercisePosition].getName()
+        }
+
+
+
         setExerciseProgressbar()
     }
+
     private fun stopExerciseTimer() {
         if (exerciseTimer != null) {
             exerciseTimer?.cancel()
