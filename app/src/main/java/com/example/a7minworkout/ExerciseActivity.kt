@@ -93,8 +93,15 @@ class ExerciseActivity : AppCompatActivity() {
         binding?.tvExercise?.visibility = View.INVISIBLE
         binding?.flExercise?.visibility = View.INVISIBLE
         binding?.ivImage?.visibility = View.INVISIBLE
+        binding?.tvUpcomingLabel?.visibility = View.VISIBLE
+        binding?.tvUpcomingExerciseName?.visibility = View.VISIBLE
 
         stopRestTimer()
+
+        exerciseList?.let {
+            binding?.tvUpcomingExerciseName?.text = it[currentExercisePosition + 1].getName()
+        }
+
         setRestProgressbar()
     }
 
@@ -111,14 +118,15 @@ class ExerciseActivity : AppCompatActivity() {
         binding?.tvExercise?.visibility = View.VISIBLE
         binding?.flExercise?.visibility = View.VISIBLE
         binding?.ivImage?.visibility = View.VISIBLE
+        binding?.tvUpcomingLabel?.visibility = View.INVISIBLE
+        binding?.tvUpcomingExerciseName?.visibility = View.INVISIBLE
 
         stopExerciseTimer()
+
         exerciseList?.let {
             binding?.ivImage?.setImageResource(it[currentExercisePosition].getImage())
             binding?.tvExercise?.text = it[currentExercisePosition].getName()
         }
-
-
 
         setExerciseProgressbar()
     }
