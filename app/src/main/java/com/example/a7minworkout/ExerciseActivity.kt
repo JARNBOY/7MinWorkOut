@@ -1,15 +1,19 @@
 package com.example.a7minworkout
 
 import android.content.ContentValues.TAG
+import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
+import android.widget.MediaController
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.example.a7minworkout.databinding.ActivityExerciseBinding
+import java.net.URI
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,6 +28,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var currentExercisePosition = -1
 
     private var tts: TextToSpeech? = null
+    private var player: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +58,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         stopRestTimer()
         stopExerciseTimer()
         stopTTS()
+        stopPressStartSound()
         binding = null
     }
 
@@ -123,6 +129,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun setUpRestView() {
+
+        addPressStartSound()
+
         binding?.flRest?.visibility = View.VISIBLE
         binding?.tvTitle?.visibility = View.VISIBLE
         binding?.tvExercise?.visibility = View.INVISIBLE
@@ -180,6 +189,24 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+    private fun addPressStartSound() {
+        try {
+            val soundURI = Uri.parse("android.resource://com.example.a7minworkout/" + R.raw.press_start)
+            player = MediaPlayer.create(applicationContext, soundURI)
+            player?.isLooping = false
+            player?.start()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun stopPressStartSound() {
+
+        if (player != null) {
+            player!!.stop()
+
+        }
+    }
 
 
 }
